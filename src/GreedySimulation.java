@@ -7,6 +7,7 @@ class GreedySimulation extends Simulation {
         int total = 0;
         while (daysLeft > 0 && !libraries.isEmpty()) {
             Library library = selectLibrary();
+            if (library.score == 0) break;
             daysLeft -= library.signupDelay;
             for (Library lib : libraries) {
                 lib.books.removeAll(library.selected);
