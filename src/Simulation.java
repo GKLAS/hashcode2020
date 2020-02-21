@@ -2,14 +2,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Scanner;
 
 abstract class Simulation {
     final ArrayList<Library> libraries = new ArrayList<>();
+    final ArrayList<Library> selected = new ArrayList<>();
     int B;
     int L;
-    int D;
+    int daysLeft;
     Integer[] S;
 
     abstract int simulate();
@@ -18,25 +18,25 @@ abstract class Simulation {
         try (Scanner scanner = new Scanner(new File(filename))) {
             B = scanner.nextInt();
             L = scanner.nextInt();
-            D = scanner.nextInt();
+            daysLeft = scanner.nextInt();
 
             S = new Integer[B];
             for (int i = 0; i < B; i++) {
                 S[i] = scanner.nextInt();
             }
 
+            selected.clear();
             libraries.clear();
             for (int i = 0; i < L; i++) {
                 int N = scanner.nextInt();
                 int T = scanner.nextInt();
                 int M = scanner.nextInt();
-                HashSet<Integer> books = new HashSet<>();
+                ArrayList<Integer> books = new ArrayList<>();
                 for (int j = 0; j < N; j++) {
                     int ID = scanner.nextInt();
                     books.add(ID);
                 }
-                libraries.add(new Library(books, T, M));
-                S[i] = scanner.nextInt();
+                libraries.add(new Library(i, books, T, M, S));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -44,13 +44,14 @@ abstract class Simulation {
     }
 
     void write(String filename) {
-//        try (PrintWriter writer = new PrintWriter(filename)) {
-//            for (Car car : cars) {
-//                writer.println(car);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try (PrintWriter writer = new PrintWriter(filename)) {
+            writer.println(selected.size());
+            for (Library lib : selected) {
+                writer.println(lib);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public int run(String input, String output) {
