@@ -4,18 +4,18 @@ import java.util.stream.Collectors;
 
 public class Library {
     final int id;
-    final List<Integer> books;
+    final List<Book> books;
     final int signupDelay;
     final int shippingCapacity;
-    List<Integer> selected;
+    List<Book> selected;
     int score;
 
-    public Library(int id, List<Integer> books, int signupDelay, int shippingCapacity, Integer[] scores) {
+    public Library(int id, List<Book> books, int signupDelay, int shippingCapacity) {
         this.id = id;
         this.books = books;
         this.signupDelay = signupDelay;
         this.shippingCapacity = shippingCapacity;
-        books.sort(Comparator.comparingInt(t -> -scores[t]));
+        books.sort(Comparator.comparingInt(b -> -b.score));
     }
 
     public int shippingDays() {
@@ -28,9 +28,9 @@ public class Library {
                 selected.stream().map(String::valueOf).collect(Collectors.joining(" "));
     }
 
-    public void calcScore(int daysLeft, Integer[] scores) {
+    public void calcScore(int daysLeft) {
         int onTime = Math.min(shippingDays(), Math.max(daysLeft - signupDelay, 0)) * shippingCapacity;
         selected = (onTime < books.size()) ? books.subList(0, onTime) : books;
-        score = selected.stream().mapToInt(i -> scores[i]).sum();
+        score = selected.stream().mapToInt(b -> b.score).sum();
     }
 }

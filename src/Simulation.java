@@ -7,36 +7,35 @@ import java.util.Scanner;
 abstract class Simulation {
     final ArrayList<Library> libraries = new ArrayList<>();
     final ArrayList<Library> selected = new ArrayList<>();
-    int B;
-    int L;
+    final ArrayList<Book> books = new ArrayList<>();
     int daysLeft;
-    Integer[] S;
 
     abstract int simulate();
 
     public void read(String filename) {
         try (Scanner scanner = new Scanner(new File(filename))) {
-            B = scanner.nextInt();
-            L = scanner.nextInt();
+            int bookCount = scanner.nextInt();
+            int libCount = scanner.nextInt();
             daysLeft = scanner.nextInt();
 
-            S = new Integer[B];
-            for (int i = 0; i < B; i++) {
-                S[i] = scanner.nextInt();
+            books.clear();
+            for (int i = 0; i < bookCount; i++) {
+                int score = scanner.nextInt();
+                books.add(new Book(i, score));
             }
 
             selected.clear();
             libraries.clear();
-            for (int i = 0; i < L; i++) {
-                int N = scanner.nextInt();
-                int T = scanner.nextInt();
-                int M = scanner.nextInt();
-                ArrayList<Integer> books = new ArrayList<>();
-                for (int j = 0; j < N; j++) {
+            for (int i = 0; i < libCount; i++) {
+                int catalog = scanner.nextInt();
+                int signupDelay = scanner.nextInt();
+                int shippingCapacity = scanner.nextInt();
+                ArrayList<Book> libBooks = new ArrayList<>();
+                for (int j = 0; j < catalog; j++) {
                     int ID = scanner.nextInt();
-                    books.add(ID);
+                    libBooks.add(books.get(ID));
                 }
-                libraries.add(new Library(i, books, T, M, S));
+                libraries.add(new Library(i, libBooks, signupDelay, shippingCapacity));
             }
         } catch (IOException e) {
             e.printStackTrace();

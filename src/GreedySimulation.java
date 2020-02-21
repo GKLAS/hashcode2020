@@ -20,7 +20,7 @@ class GreedySimulation extends Simulation {
 
     private Library selectLibrary() {
         for (Library library : libraries) {
-            library.calcScore(daysLeft, S);
+            library.calcScore(daysLeft);
         }
         libraries.sort(Comparator.comparingInt(l -> -l.score));
         return libraries.remove(0);
