@@ -21,7 +21,7 @@ class GreedySimulation extends Simulation {
         for (Library library : libraries) {
             library.calcScore(daysLeft, S);
         }
-        libraries.sort(Comparator.comparingInt(l -> l.score));
+        libraries.sort(Comparator.comparingInt(l -> -l.score));
         return libraries.remove(0);
     }
 }
